@@ -1,14 +1,8 @@
 #!/usr/bin/python3
+import typing as t
 
 import sys
 import datetime
-
-from typing import Type
-from typing import Optional
-from typing import List
-from typing import Tuple
-from typing import Union
-from typing import Iterator
 
 
 class CronExpection(ValueError):
@@ -19,7 +13,7 @@ class CronExpection(ValueError):
 
 class ConfigParser:
     @staticmethod
-    def read() -> Iterator[str]:
+    def read() -> t.Iterator[str]:
         line = sys.stdin.readline()
         while line:
             yield line.strip()
@@ -31,7 +25,7 @@ class TimeInput:
     Descriptor for accessing parsed time argument.
     """
 
-    def __init__(self, time_expr: Optional[str] = None) -> None:
+    def __init__(self, time_expr: t.Optional[str] = None) -> None:
         self.time = time_expr
 
     def __get__(self, instance, cls):
@@ -53,7 +47,7 @@ class TimeArg:
 
 
 class TimeTab:
-    def __init__(self, time_expr: Optional[str] = None) -> None:
+    def __init__(self, time_expr: t.Optional[str] = None) -> None:
         self.time = time_expr
 
     def __get__(self, instance, cls):
@@ -63,7 +57,7 @@ class TimeTab:
         self.time = datetime.time(*self._expand(value))
 
     @classmethod
-    def _expand(cls, value: str) -> List[int]:
+    def _expand(cls, value: str) -> t.List[int]:
         expressions = value.split()
         if len(expressions) != 2:
             raise CronExpection("")
@@ -145,7 +139,7 @@ class CronTabCommand:
     @classmethod
     def get_next(
         cls, current_time: datetime.time, expected_time: datetime.time
-    ) -> Optional[datetime.time]:
+    ) -> t.Optional[datetime.time]:
         """
         Getting next time to run utility
         """
